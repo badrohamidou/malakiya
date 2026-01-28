@@ -1,0 +1,100 @@
+
+import os
+os.makedirs('/mnt/kimi/output/data', exist_ok=True)
+
+json_content = '''{
+  "products": [
+    {
+      "id": 1,
+      "name": "طقم ديكور ذهبي فاخر",
+      "category": "decorations",
+      "price": 5000,
+      "images": ["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80"],
+      "note": "متوفر بألوان متعددة",
+      "isFeatured": true,
+      "isHot": true,
+      "isDiscount": false,
+      "isHidden": false,
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "كوشة عرس ملكية",
+      "category": "furniture",
+      "price": 15000,
+      "images": ["https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80"],
+      "note": "تتسع لـ 6 أشخاص",
+      "isFeatured": true,
+      "isHot": false,
+      "isDiscount": false,
+      "isHidden": false,
+      "createdAt": "2024-01-02T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "إضاءة ليد ساحرة",
+      "category": "lighting",
+      "price": 3000,
+      "images": ["https://images.unsplash.com/photo-1513506003013-d531632103c7?w=800&q=80"],
+      "note": "ألوان متغيرة مع ريموت",
+      "isFeatured": false,
+      "isHot": true,
+      "isDiscount": true,
+      "isHidden": false,
+      "createdAt": "2024-01-03T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "صندوق هدايا أنيق",
+      "category": "gifts",
+      "price": 2500,
+      "images": ["https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800&q=80"],
+      "note": "قابل للتخصيص",
+      "isFeatured": false,
+      "isHot": false,
+      "isDiscount": false,
+      "isHidden": false,
+      "createdAt": "2024-01-04T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "مرايا قديمة الطراز",
+      "category": "decorations",
+      "price": 4000,
+      "images": ["https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80"],
+      "note": "إطار ذهبي فاخر",
+      "isFeatured": true,
+      "isHot": false,
+      "isDiscount": false,
+      "isHidden": false,
+      "createdAt": "2024-01-05T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "طاولات خشبية فاخرة",
+      "category": "furniture",
+      "price": 8000,
+      "images": ["https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=800&q=80"],
+      "note": "طقم 4 طاولات",
+      "isFeatured": false,
+      "isHot": true,
+      "isDiscount": true,
+      "isHidden": false,
+      "createdAt": "2024-01-06T00:00:00.000Z"
+    }
+  ],
+  "settings": {
+    "options": [
+      { "id": 0, "name": "استلام من المحل", "price": 0 },
+      { "id": 1, "name": "توصيل ذهاب", "price": 1000 },
+      { "id": 2, "name": "توصيل ذهاب وإياب", "price": 2000 }
+    ],
+    "whatsappNumber": "213781054132",
+    "storeLocation": "وهران، الجزائر"
+  }
+}'''
+
+with open('/mnt/kimi/output/data/initial-data.json', 'w', encoding='utf-8') as f:
+    f.write(json_content)
+
+print("✅ data/initial-data.json created successfully")
