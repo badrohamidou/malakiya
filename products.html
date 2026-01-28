@@ -1,0 +1,199 @@
+
+html_content = '''<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنتجات | الحطة الملكية</title>
+    <meta name="description" content="تصفح تشكيلتنا الفاخرة من الديكورات والاكسسوارات للأعراس والمناسبات">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <img src="https://via.placeholder.com/150x150/1a1a2e/FFD700?text=الحطة+الملكية" alt="الحطة الملكية" class="loading-logo">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">جاري التحميل...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="https://via.placeholder.com/60x60/1a1a2e/FFD700?text=👑" alt="logo">
+                    <div class="logo-text">
+                        <h1>الحطة الملكية</h1>
+                        <span>كراء ديكورات فاخرة</span>
+                    </div>
+                </a>
+                
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="index.html" class="nav-link">الرئيسية</a></li>
+                    <li><a href="products.html" class="nav-link active">المنتجات</a></li>
+                    <li><a href="index.html#about" class="nav-link">من نحن</a></li>
+                    <li><a href="index.html#contact" class="nav-link">اتصل بنا</a></li>
+                    <li><a href="admin.html" class="nav-link admin-link">لوحة التحكم</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="cart.html" class="cart-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+                    <button class="menu-toggle" id="menu-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>منتجاتنا الفاخرة</h1>
+            <nav class="breadcrumb">
+                <a href="index.html">الرئيسية</a>
+                <span>/</span>
+                <span>المنتجات</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-page section-padding">
+        <div class="container">
+            <!-- Filters -->
+            <div class="filters-bar">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="ابحث عن منتج...">
+                    <button class="search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="filter-group">
+                    <select id="category-filter" class="filter-select">
+                        <option value="all">جميع التصنيفات</option>
+                        <option value="decorations">ديكورات</option>
+                        <option value="furniture">أثاث</option>
+                        <option value="accessories">اكسسوارات</option>
+                        <option value="gifts">صناديق هدايا</option>
+                        <option value="lighting">إضاءة</option>
+                    </select>
+                    
+                    <select id="sort-filter" class="filter-select">
+                        <option value="newest">الأحدث</option>
+                        <option value="price-low">السعر: من الأقل للأعلى</option>
+                        <option value="price-high">السعر: من الأعلى للأقل</option>
+                        <option value="popular">الأكثر طلباً</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Active Filters -->
+            <div class="active-filters" id="active-filters"></div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="products-grid">
+                <!-- Products loaded dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <div class="empty-icon">🔍</div>
+                <h3>لا توجد منتجات</h3>
+                <p>جرب البحث بكلمات مختلفة أو تصفح التصنيفات الأخرى</p>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="https://via.placeholder.com/80x80/1a1a2e/FFD700?text=👑" alt="الحطة الملكية">
+                    <h3>الحطة الملكية</h3>
+                    <p>كراء ديكورات فاخرة للأعراس والمناسبات</p>
+                </div>
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="products.html">المنتجات</a></li>
+                        <li><a href="index.html#about">من نحن</a></li>
+                        <li><a href="admin.html">لوحة التحكم</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>تواصل معنا</h4>
+                    <p>📍 وهران، الجزائر</p>
+                    <p>📞 +213 781 054 132</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 الحطة الملكية. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/213781054132" class="whatsapp-float" target="_blank" aria-label="تواصل عبر واتساب">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+    </a>
+
+    <!-- Product Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body">
+                <!-- Product details loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <span class="toast-icon">✓</span>
+            <span class="toast-message">تمت الإضافة للسلة</span>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllProducts();
+            setupFilters();
+        });
+    </script>
+</body>
+</html>'''
+
+with open('/mnt/kimi/output/products.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("✅ products.html created successfully")
