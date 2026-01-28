@@ -1,0 +1,409 @@
+
+html_content = '''<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | الحطة الملكية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--color-dark) 0%, #1a1a2e 100%); }
+        .login-card { background: var(--color-white); padding: 3rem; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px; text-align: center; }
+        .login-card h2 { color: var(--color-dark); margin-bottom: 0.5rem; }
+        .login-card p { color: var(--color-gray); margin-bottom: 2rem; }
+        .login-form .form-group { margin-bottom: 1.5rem; text-align: right; }
+        .login-form label { display: block; margin-bottom: 0.5rem; color: var(--color-dark); font-weight: 600; }
+        .login-form input { width: 100%; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; transition: border-color 0.3s; }
+        .login-form input:focus { border-color: var(--color-gold); outline: none; }
+        .admin-panel { display: none; min-height: 100vh; background: #f5f5f5; }
+        .admin-sidebar { position: fixed; right: 0; top: 0; width: 280px; height: 100vh; background: var(--color-dark); color: white; padding: 2rem; overflow-y: auto; z-index: 1000; }
+        .admin-logo { text-align: center; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,215,0,0.2); }
+        .admin-logo h2 { color: var(--color-gold); font-size: 1.5rem; }
+        .admin-nav ul { list-style: none; }
+        .admin-nav li { margin-bottom: 0.5rem; }
+        .admin-nav a { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; transition: all 0.3s; }
+        .admin-nav a:hover, .admin-nav a.active { background: rgba(255,215,0,0.1); color: var(--color-gold); }
+        .admin-main { margin-right: 280px; padding: 2rem; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 1rem; }
+        .stat-icon { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .stat-icon.blue { background: #e3f2fd; }
+        .stat-icon.green { background: #e8f5e9; }
+        .stat-icon.gold { background: #fff8e1; }
+        .stat-icon.red { background: #ffebee; }
+        .stat-info h3 { font-size: 2rem; color: var(--color-dark); margin-bottom: 0.25rem; }
+        .stat-info p { color: var(--color-gray); font-size: 0.9rem; }
+        .admin-section { background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .section-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th, .data-table td { padding: 1rem; text-align: right; border-bottom: 1px solid #eee; }
+        .data-table th { background: #f8f9fa; font-weight: 600; color: var(--color-dark); }
+        .data-table tr:hover { background: #f8f9fa; }
+        .product-thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+        .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .badge-featured { background: #fff8e1; color: #f9a825; }
+        .badge-hot { background: #ffebee; color: #c62828; }
+        .badge-discount { background: #e8f5e9; color: #2e7d32; }
+        .badge-hidden { background: #eceff1; color: #546e7a; }
+        .btn-sm { padding: 0.5rem 1rem; font-size: 0.875rem; }
+        .btn-icon { padding: 0.5rem; border-radius: 8px; }
+        .modal-large { max-width: 800px; max-height: 90vh; overflow-y: auto; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .form-group-full { grid-column: 1 / -1; }
+        .image-upload-area { border: 2px dashed #ddd; border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .image-upload-area:hover { border-color: var(--color-gold); background: #fff8e1; }
+        .image-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .image-preview-item { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; }
+        .image-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .image-preview-item .remove-image { position: absolute; top: 5px; right: 5px; background: rgba(255,0,0,0.8); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 12px; }
+        .checkbox-group { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .checkbox-item { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .checkbox-item input { width: 20px; height: 20px; accent-color: var(--color-gold); }
+        .tabs { display: flex; gap: 1rem; border-bottom: 2px solid #eee; margin-bottom: 2rem; }
+        .tab-btn { padding: 1rem 2rem; background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--color-gray); position: relative; font-family: inherit; }
+        .tab-btn.active { color: var(--color-gold); font-weight: 600; }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -2px; right: 0; left: 0; height: 2px; background: var(--color-gold); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .delivery-prices-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        @media (max-width: 992px) { 
+            .admin-sidebar { transform: translateX(100%); transition: transform 0.3s; } 
+            .admin-sidebar.open { transform: translateX(0); }
+            .admin-main { margin-right: 0; }
+            .form-grid, .delivery-prices-form { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="admin-login" id="admin-login">
+        <div class="login-card">
+            <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+                <img src="https://via.placeholder.com/80x80/1a1a2e/FFD700?text=👑" alt="logo" style="margin: 0;">
+            </div>
+            <h2>لوحة التحكم</h2>
+            <p>الحطة الملكية - كراء ديكورات فاخرة</p>
+            <form class="login-form" id="login-form">
+                <div class="form-group">
+                    <label for="admin-password">كلمة المرور</label>
+                    <input type="password" id="admin-password" placeholder="أدخل كلمة المرور" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">دخول</button>
+            </form>
+            <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-gray);">
+                <a href="index.html" style="color: var(--color-gold);">العودة للموقع</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="admin-panel">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>👑 الحطة الملكية</h2>
+                <p style="font-size: 0.875rem; opacity: 0.8;">لوحة التحكم</p>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="#dashboard" class="active" data-tab="dashboard">
+                        <span>📊</span> لوحة التحكم
+                    </a></li>
+                    <li><a href="#products" data-tab="products">
+                        <span>🛍️</span> المنتجات
+                    </a></li>
+                    <li><a href="#orders" data-tab="orders">
+                        <span>📋</span> الطلبات
+                    </a></li>
+                    <li><a href="#settings" data-tab="settings">
+                        <span>⚙️</span> الإعدادات
+                    </a></li>
+                    <li><a href="#" id="logout-btn">
+                        <span>🚪</span> تسجيل الخروج
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="admin-header">
+                <h2 id="page-title">لوحة التحكم</h2>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <span id="admin-date"></span>
+                    <a href="index.html" class="btn btn-outline btn-sm" target="_blank">عرض الموقع</a>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard-tab">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">🛍️</div>
+                        <div class="stat-info">
+                            <h3 id="total-products">0</h3>
+                            <p>إجمالي المنتجات</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon gold">⭐</div>
+                        <div class="stat-info">
+                            <h3 id="featured-products">0</h3>
+                            <p>منتجات مميزة</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">📋</div>
+                        <div class="stat-info">
+                            <h3 id="total-orders">0</h3>
+                            <p>إجمالي الطلبات</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">🔥</div>
+                        <div class="stat-info">
+                            <h3 id="hot-products">0</h3>
+                            <p>الأكثر طلباً</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>آخر الطلبات</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table" id="recent-orders-table">
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>العميل</th>
+                                    <th>المنتجات</th>
+                                    <th>المجموع</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders-body">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: #999;">لا توجد طلبات بعد</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Tab -->
+            <div class="tab-content" id="products-tab">
+                <div class="admin-section">
+                    <div class="section-header-flex">
+                        <h3>إدارة المنتجات</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="exportData()">📥 تصدير البيانات</button>
+                            <label class="btn btn-outline btn-sm" style="cursor: pointer;">
+                                📤 استيراد البيانات
+                                <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importData(this)">
+                            </label>
+                            <button class="btn btn-primary btn-sm" onclick="openProductModal()">+ إضافة منتج</button>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>الصورة</th>
+                                    <th>الاسم</th>
+                                    <th>التصنيف</th>
+                                    <th>السعر</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <!-- Products loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div class="tab-content" id="orders-tab">
+                <div class="admin-section">
+                    <h3>جميع الطلبات</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>العميل</th>
+                                    <th>الهاتف</th>
+                                    <th>المنتجات</th>
+                                    <th>التوصيل</th>
+                                    <th>المجموع</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="all-orders-body">
+                                <!-- Orders loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings-tab">
+                <div class="admin-section">
+                    <h3>أسعار التوصيل</h3>
+                    <form id="delivery-settings-form" class="delivery-prices-form">
+                        <div class="form-group">
+                            <label>استلام من المحل (0 دج)</label>
+                            <input type="number" id="delivery-0" value="0" readonly style="background: #f5f5f5;">
+                        </div>
+                        <div class="form-group">
+                            <label>توصيل ذهاب (دج)</label>
+                            <input type="number" id="delivery-1" value="1000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>توصيل ذهاب وإياب (دج)</label>
+                            <input type="number" id="delivery-2" value="2000" min="0">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1; margin-top: 1rem;">
+                            <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="admin-section">
+                    <h3>معلومات المتجر</h3>
+                    <form id="store-settings-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>رقم الواتساب</label>
+                                <input type="text" id="whatsapp-number" value="213781054132" placeholder="مثال: 213781054132">
+                            </div>
+                            <div class="form-group">
+                                <label>الموقع</label>
+                                <input type="text" id="store-location" value="وهران، الجزائر" placeholder="الموقع">
+                            </div>
+                            <div class="form-group form-group-full">
+                                <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="admin-section">
+                    <h3>إدارة البيانات</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-outline" onclick="exportData()">📥 تصدير جميع البيانات (JSON)</button>
+                        <label class="btn btn-outline" style="cursor: pointer;">
+                            📤 استيراد البيانات
+                            <input type="file" accept=".json" style="display: none;" onchange="importData(this)">
+                        </label>
+                        <button class="btn btn-danger" onclick="clearAllData()" style="background: #c62828; color: white;">🗑️ مسح جميع البيانات</button>
+                    </div>
+                    <p style="margin-top: 1rem; color: #666; font-size: 0.875rem;">
+                        💡 نصيحة: قم بتصدير البيانات بشكل دوري للاحتفاظ بنسخة احتياطية
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modal-title">إضافة منتج جديد</h3>
+                <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            </div>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="form-grid">
+                    <div class="form-group form-group-full">
+                        <label>صور المنتج *</label>
+                        <div class="image-upload-area" onclick="document.getElementById('product-images').click()">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📷</div>
+                            <p>اضغط هنا لرفع الصور أو اسحبها وأفلتها</p>
+                            <p style="font-size: 0.875rem; color: #999; margin-top: 0.5rem;">JPG, PNG, WEBP - الحد الأقصى 5MB</p>
+                            <input type="file" id="product-images" multiple accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="image-preview-grid" id="image-preview-grid"></div>
+                        <input type="hidden" id="product-image-urls">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-name">اسم المنتج *</label>
+                        <input type="text" id="product-name" required placeholder="اسم المنتج">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-category">التصنيف *</label>
+                        <select id="product-category" required>
+                            <option value="">اختر التصنيف</option>
+                            <option value="decorations">ديكورات</option>
+                            <option value="furniture">أثاث</option>
+                            <option value="accessories">اكسسوارات</option>
+                            <option value="gifts">صناديق هدايا</option>
+                            <option value="lighting">إضاءة</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-price">السعر (دج) *</label>
+                        <input type="number" id="product-price" required min="0" placeholder="السعر بالدينار">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-note">ملاحظة (اختياري)</label>
+                        <input type="text" id="product-note" placeholder="مثال: متوفر بألوان متعددة">
+                    </div>
+                    
+                    <div class="form-group form-group-full">
+                        <label>خيارات المنتج</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="is-featured">
+                                <span>⭐ مميز</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="is-hot">
+                                <span>🔥 الأكثر طلباً</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="is-discount">
+                                <span>💰 خصم</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="is-hidden">
+                                <span>👁️ مخفي</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-outline" onclick="closeProductModal()">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ المنتج</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>'''
+
+with open('/mnt/kimi/output/admin.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("✅ admin.html created successfully")
